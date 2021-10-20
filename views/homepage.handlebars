@@ -1,1 +1,13 @@
-<div>You are on the homepage</div>
+<ul class="post-list">
+    {{#each posts as |post|}}
+  <li>
+    <article class="">
+      <div class="">
+        <a href="/post/{{post.id}}" target="_blank">{{post.title}}</a>
+        <span>({{post.created_at}})</span>
+        <p>By: {{post.user.username}}</p>
+      </div>
+    </article>
+  </li>
+  {{/each}}
+</ul>
