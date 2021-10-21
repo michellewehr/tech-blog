@@ -1,4 +1,4 @@
-const { Post, User } = require('../models');
+const { Post, User, Comment } = require('../models');
 
 const router = require('express').Router();
 
@@ -14,22 +14,31 @@ router.get('/login', (req, res) => {
 
 //homepage - localhost:3001/
 router.get('/', (req, res) => {
-    Post.findAll({
-        attributes: [
-            'id',
-            'title',
-            'post_body',
-            'created_at', 
-            'user_id'
-        ],
-        include: {
+  Post.findAll({
+    attributes: [
+        'id',
+        'title',
+        'post_body',
+        'created_at', 
+        'user_id'
+    ],
+    include: [
+        {
             model: User,
             attributes: ['username']
+        },
+        {
+            model: Comment,
+            attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+            // include: {
+            //     model: User,
+            //     attributes: 'username'
+            // }
         }
-    })
+    ]
+})
   .then(dbPostData => {
       const posts = dbPostData.map(post => post.get({ plain: true }));
-    console.log(posts);
       res.render('homepage', {
           posts
       })
@@ -54,10 +63,20 @@ router.get('/post/:id', (req, res) => {
         'created_at', 
         'user_id'
     ],
-    include: {
-        model: User,
-        attributes: ['username']
-    }
+    include: [
+      {
+          model: User,
+          attributes: ['username']
+      },
+      {
+          model: Comment,
+          attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+          // include: {
+          //     model: User,
+          //     attributes: 'username'
+          // }
+      }
+  ]
     })
       .then(dbPostData => {
         //   console.log(dbPostData);
