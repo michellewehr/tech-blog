@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
         include: [
             {
                 model: User,
-                attributes: ['username']
+                attributes: ['username']    
             },
             {
                 model: Comment,
@@ -41,17 +41,18 @@ router.get('/:id', (req, res) => {
         }, 
         include: [
             {
-                model: Comment,
-                attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
-                include: {
-                    model: User,
-                    attributes: ['username']
-                }
+                model: User,
+                attributes: ['username']
             },
             {
-            model: User,
-            attributes: 'username'
+                model: Comment,
+                attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+                // include: {
+                //     model: User,
+                //     attributes: 'username'
+                // }
             }
+           
         ]
     })
     .then(dbPostData => {
